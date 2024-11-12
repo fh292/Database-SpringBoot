@@ -2,6 +2,7 @@ package com.example.database.service;
 
 import com.example.database.bo.CreateUserRequest;
 import com.example.database.bo.UserResponse;
+import com.example.database.controller.Status;
 import com.example.database.entity.UserEntity;
 import com.example.database.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -25,8 +26,22 @@ public class UserServiceImpl implements UserService {
     public UserResponse createUser(CreateUserRequest request) {
         UserEntity userEntity = new UserEntity();
         userEntity.setName(request.getName());
+        userEntity.setStatus(Status.valueOf(request.getStatus()));
         userEntity = userRepository.save(userEntity);
-        UserResponse response = new UserResponse(userEntity.getId(), userEntity.getName());
+        UserResponse response = new UserResponse(userEntity.getId(), userEntity.getName(), userEntity.getStatus().toString());
         return response;
     }
+
+    @Override
+    public UserResponse updateStatus(Long id, String status) {
+        if (!status.equalsIgnoreCase("Active") && !status.equalsIgnoreCase("Inactive")) {
+            throw new IllegalArgumentException("Invalid status. Status must be either 'Active' or 'Inactive'.");
+        }
+        UserEntity userEntity = userRepository.findById(id).orElse(null);
+        userEntity.setStatus(Status.valueOf(status));
+        userEntity = userRepository.save(userEntity);
+        UserResponse response = new UserResponse(userEntity.getId(), userEntity.getName(), userEntity.getStatus().toString());
+        return response;
+    }
+
 }

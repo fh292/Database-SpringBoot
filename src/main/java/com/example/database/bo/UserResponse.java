@@ -5,9 +5,10 @@ public class UserResponse {
     private String name;
     private String status;
 
-    public UserResponse(Long id, String name) {
+    public UserResponse(Long id, String name, String status) {
         this.id = id;
         this.name = name;
+        this.status = status;
     }
 
     public Long getId() {

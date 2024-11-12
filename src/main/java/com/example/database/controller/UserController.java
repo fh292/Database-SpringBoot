@@ -15,8 +15,8 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    public UserController(UserService userService){
-        this.userService=userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     // GET endpoint to retrieve all users
@@ -40,4 +40,19 @@ public class UserController {
         }
     }
 
+    @PutMapping("/updateStatus")
+    public ResponseEntity<String> updateStatus(@RequestParam Long userId, @RequestParam String status) {
+        try {
+            UserResponse updateResponse = userService.updateStatus(userId, status);
+            if (updateResponse != null) {
+                return ResponseEntity.status(HttpStatus.OK).body("Updated Successfully");
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+
+        }
+
+    }
 }

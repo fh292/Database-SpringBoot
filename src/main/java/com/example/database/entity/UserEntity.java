@@ -1,5 +1,6 @@
 package com.example.database.entity;
 
+import com.example.database.controller.Status;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,6 +13,9 @@ public class UserEntity {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name="status", nullable = true)
+    private Status status;
 
     public Long getId() {
         return id;
@@ -29,4 +33,11 @@ public class UserEntity {
         this.name = name;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 }
